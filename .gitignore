@@ -26,3 +26,6 @@ reports/
 # OS
 Thumbs.db
 .DS_Store
+
+# Project planning (local only, not for commit)
+IMPLEMENTATION_PLAN.md
