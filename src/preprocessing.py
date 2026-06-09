@@ -1,5 +1,7 @@
 import pandas as pd
 
+from src.features import add_all_features
+
 
 REQUIRED_COLUMNS = [
     "location",
@@ -81,6 +83,9 @@ def preprocess_data(
 
     # Jika created_at gagal dibaca, hasilnya NaN -> isi 0
     df["account_age_days"] = df["account_age_days"].fillna(0).astype(int)
+
+    # 5. Additional engineered features
+    df = add_all_features(df)
 
     return df
 

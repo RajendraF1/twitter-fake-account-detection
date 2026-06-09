@@ -12,6 +12,10 @@ features:
     - lang_encode
     - desc_len
     - account_age_days
+    - follower_friend_ratio
+    - screen_name_numeric_ratio
+    - url_available
+    - description_has_url
   target: "fake"
 
 model:

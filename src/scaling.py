@@ -4,6 +4,9 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 
+from src.features import NEW_FEATURE_COLUMNS
+
+
 FEATURE_COLUMNS = [
     "followers_count",
     "friends_count",
@@ -11,8 +14,8 @@ FEATURE_COLUMNS = [
     "location_available",
     "lang_encode",
     "desc_len",
-    "account_age_days"
-]
+    "account_age_days",
+] + NEW_FEATURE_COLUMNS
 
 
 def validate_feature_columns(df: pd.DataFrame) -> None:
