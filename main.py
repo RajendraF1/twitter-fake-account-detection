@@ -36,8 +36,8 @@ TEST_PATH = "data/raw/test_data_eps1.xlsx"
 
 PROCESSED_DIR = Path("data/processed")
 MODELS_DIR = Path("models")
-RESULTS_DIR = Path("results")
-FIGURES_DIR = RESULTS_DIR / "figures"
+REPORTS_DIR = Path("reports")
+FIGURES_DIR = REPORTS_DIR / "figures"
 
 
 def create_directories() -> None:
@@ -46,7 +46,7 @@ def create_directories() -> None:
     """
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -148,8 +148,8 @@ def run_evaluation(model, X_train, y_train, X_test, y_test):
 
     summary_text = build_evaluation_summary(train_results, cv_results, test_results)
 
-    save_text_report(summary_text, RESULTS_DIR / "metrics.txt")
-    save_feature_weights(feature_weights_df, RESULTS_DIR / "feature_weights.csv")
+    save_text_report(summary_text, REPORTS_DIR / "metrics.txt")
+    save_feature_weights(feature_weights_df, REPORTS_DIR / "feature_weights.csv")
 
     print("Evaluation results have been saved successfully.")
 
@@ -207,7 +207,7 @@ def print_final_summary(summary_text, feature_weights_df):
     print("\nPipeline execution completed successfully.")
     print(f"Processed data directory : {PROCESSED_DIR}")
     print(f"Models directory         : {MODELS_DIR}")
-    print(f"Results directory        : {RESULTS_DIR}")
+    print(f"Reports directory        : {REPORTS_DIR}")
     print(f"Figures directory        : {FIGURES_DIR}")
 
 
