@@ -43,7 +43,7 @@ def train_model_on_data(model_name, df_train_final, df_test_final, models_dir, r
     cv_results = evaluate_cross_validation(model, X_train, y_train, cv=cv_folds)
     test_results = evaluate_test_performance(model, X_test, y_test) if y_test is not None else None
     feature_weights_df = extract_feature_weights(model)
-    summary = build_evaluation_summary(train_results, cv_results, test_results)
+    summary = build_evaluation_summary(train_results, cv_results, test_results, model_name)
     save_text_report(summary, reports_dir / f"{model_name}_metrics.txt")
     save_feature_weights(feature_weights_df, reports_dir / f"{model_name}_feature_weights.csv")
 

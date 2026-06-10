@@ -29,3 +29,6 @@ Thumbs.db
 
 # Project planning (local only, not for commit)
 IMPLEMENTATION_PLAN.md
+
+# Temporary files
+tmp_*

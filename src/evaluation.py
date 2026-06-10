@@ -56,22 +56,18 @@ def evaluate_cross_validation(model, X_train: pd.DataFrame, y_train: pd.Series, 
 
 
 def extract_feature_weights(model) -> pd.DataFrame:
-    """
-    Mengambil bobot fitur dari model SLP/MLPClassifier.
-    Untuk MLPClassifier dengan hidden_layer_sizes=(),
-    bobot input ke output ada di coefs_[0].
-    """
-    if not hasattr(model, "coefs_"):
-        raise ValueError("Model tidak memiliki atribut coefs_.")
-
-    weights = model.coefs_[0]
-
-    # Kasus klasifikasi biner: output layer biasanya 1 neuron
-    if weights.ndim == 2 and weights.shape[1] == 1:
-        weights_flat = weights[:, 0]
+    if hasattr(model, "coefs_"):
+        weights = model.coefs_[0]
+        if weights.ndim == 2 and weights.shape[1] == 1:
+            weights_flat = weights[:, 0]
+        else:
+            weights_flat = abs(weights).mean(axis=1)
+    elif hasattr(model, "coef_"):
+        weights_flat = model.coef_[0]
+    elif hasattr(model, "feature_importances_"):
+        weights_flat = model.feature_importances_
     else:
-        # Jika multi-output / multiclass, ambil rata-rata absolut sebagai ringkasan
-        weights_flat = abs(weights).mean(axis=1)
+        weights_flat = [0] * len(FEATURE_COLUMNS)
 
     feature_weights_df = pd.DataFrame({
         "feature": FEATURE_COLUMNS,
@@ -105,14 +101,12 @@ def save_feature_weights(feature_weights_df: pd.DataFrame, path: str) -> None:
 def build_evaluation_summary(
     train_results: dict,
     cv_results: dict,
-    test_results: dict = None
+    test_results: dict = None,
+    model_name: str = "Model"
 ) -> str:
-    """
-    Menyusun ringkasan evaluasi dalam bentuk teks.
-    """
     lines = []
 
-    lines.append("=== HASIL EVALUASI MODEL SLP ===\n")
+    lines.append(f"=== HASIL EVALUASI MODEL {model_name.upper()} ===\n")
 
     lines.append(f"Train Accuracy: {train_results['train_accuracy']:.4f}")
     lines.append(f"CV Mean Accuracy: {cv_results['cv_mean_accuracy']:.4f}")

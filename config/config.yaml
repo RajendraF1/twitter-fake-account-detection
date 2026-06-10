@@ -34,7 +34,6 @@ model:
   xgboost:
     n_estimators: 100
     random_state: 42
-    use_label_encoder: false
     eval_metric: "logloss"
 
 training:

@@ -59,7 +59,7 @@ def build_model(model_name: str, model_config: dict):
 
 class Pipeline:
     def __init__(self, config_path=None):
-        self.config = load_config(config_path)
+        self.config = load_config() if config_path is None else load_config(config_path)
         self._set_paths()
 
     def _set_paths(self):
@@ -139,30 +139,30 @@ class Pipeline:
             test_results = evaluate_test_performance(model, X_test, y_test)
         feature_weights_df = extract_feature_weights(model)
         summary = build_evaluation_summary(
-            train_results, cv_results, test_results
+            train_results, cv_results, test_results, model_name
         )
-        save_text_report(summary, self.reports_dir / "metrics.txt")
+        save_text_report(summary, self.reports_dir / f"{model_name}_metrics.txt")
         save_feature_weights(
-            feature_weights_df, self.reports_dir / "feature_weights.csv"
+            feature_weights_df, self.reports_dir / f"{model_name}_feature_weights.csv"
         )
 
         print("Generating visualizations...")
         save_confusion_matrix_plot(
             train_results["train_confusion_matrix"],
-            self.figures_dir / "train_confusion_matrix.png",
-            title="Train Confusion Matrix",
+            self.figures_dir / f"{model_name}_train_confusion_matrix.png",
+            title=f"{model_name} - Train Confusion Matrix",
         )
         if test_results is not None:
             save_confusion_matrix_plot(
                 test_results["test_confusion_matrix"],
-                self.figures_dir / "test_confusion_matrix.png",
-                title="Test Confusion Matrix",
+                self.figures_dir / f"{model_name}_test_confusion_matrix.png",
+                title=f"{model_name} - Test Confusion Matrix",
             )
         save_feature_weights_plot(
-            feature_weights_df, self.figures_dir / "feature_weights.png"
+            feature_weights_df, self.figures_dir / f"{model_name}_feature_weights.png"
         )
         save_cv_scores_plot(
-            cv_results["cv_scores"], self.figures_dir / "cv_scores.png"
+            cv_results["cv_scores"], self.figures_dir / f"{model_name}_cv_scores.png"
         )
         save_feature_distribution_plot(
             df_train_final,
